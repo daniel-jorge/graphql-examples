@@ -1,0 +1,20 @@
+{
+  "name": "@crz/graphql-examples",
+  "version": "0.0.1",
+  "description": "graphql examples",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "docker:clean": "docker-compose -f docker-compose.type-graphql.yml down",
+    "start:type-graphql": "docker-compose -f docker-compose.type-graphql.yml up",
+    "stop:type-graphql": "docker-compose -f docker-compose.type-graphql.yml stop",
+    "down:type-graphql": "docker-compose -f docker-compose.type-graphql.yml down"
+  },
+  "devDependencies": {
+    "lerna": "^3.13.0"
+  }
+}

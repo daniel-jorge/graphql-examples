@@ -1,0 +1,28 @@
+version: "2"
+services:
+  rest-server:
+    image: node:10-alpine
+    user: node
+    working_dir: /home/node/app/packages/rest-server
+    volumes:
+      - ".:/home/node/app:cached"
+    command: yarn start
+    ports:
+      - "3010:3000"
+  graphql-server:
+    image: node:10-alpine
+    user: node
+    working_dir: /home/node/app/packages/typegraphql-server
+    volumes:
+      - ".:/home/node/app:cached"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - DEBUG=app:*
+      - DEBUG_COLORS=true
+      - GRAPHQL_ENDPOINT=/graphql
+      - REST_SERVER=http://rest-server:3000
+      - ENABLE_VOYAGER=true
+    command: yarn start:dev
+    ports:
+      - "3000:3000"

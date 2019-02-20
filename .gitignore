@@ -1,0 +1,12 @@
+.wwp-cache
+build
+coverage
+dist
+e2e_reports
+node_modules
+selenium-debug.log
+.DS_STORE
+.idea
+yarn-error.log
+npm-debug.log
+technical.error.log

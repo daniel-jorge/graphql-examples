@@ -1,0 +1,14 @@
+{
+  "name": "@crz/rest-server",
+  "version": "1.0.0",
+  "description": "simple rest server",
+  "author": "Daniel Jorge",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "json-server --host 0.0.0.0 --watch db.json"
+  },
+  "dependencies": {
+    "json-server": "^0.14.2"
+  }
+}
