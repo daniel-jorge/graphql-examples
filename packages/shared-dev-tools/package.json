@@ -1,0 +1,33 @@
+{
+  "name": "@crz/shared-dev-tools",
+  "version": "0.0.1",
+  "description": "Shared dev tools",
+  "author": "Daniel JORGE",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "rimraf build coverage",
+    "build": "rimraf build && tsc -p ./tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint --ext .ts ./src",
+    "lint:fix": "eslint --fix --ext .ts ./src",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:ci": "jest --coverage --ci --forceExit --detectOpenHandles --runInBand"
+  },
+  "dependencies": {
+    "@types/jest": "^24.0.11",
+    "@typescript-eslint/eslint-plugin": "^1.4.0",
+    "@typescript-eslint/parser": "^1.4.0",
+    "eslint": "^5.14.1",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^24.5.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3"
+  }
+}
