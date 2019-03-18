@@ -1,20 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2016", "esnext.asynciterable"],
-    "module": "commonjs",
-    "declaration": true,
-    "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
-    "allowSyntheticDefaultImports": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es6",
-    "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "baseUrl": ".",
-    "rootDir": "src",
-    "esModuleInterop": true
+    "rootDir": "src"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build"]
