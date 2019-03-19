@@ -1,7 +1,8 @@
-import { AxiosInstance } from 'axios';
 import { SignOptions } from 'jsonwebtoken';
 
 import { User } from './user/user.entity';
+import { MovieDatasource } from './movie/movie.datasource';
+import { PersonDatasource } from './person/person.datasource';
 
 export interface User {
   id: number;
@@ -15,5 +16,8 @@ export interface Context {
     secret: string;
     options: SignOptions;
   };
-  fetcher: AxiosInstance;
+  dataSources?: {
+    movies: MovieDatasource;
+    people: PersonDatasource;
+  };
 }
