@@ -17,11 +17,10 @@ import { Context } from '../context.interface';
 export class PersonResolver {
   @Authorized()
   @Query(returns => Person, { nullable: true })
-  async Person(
-    @Ctx() ctx: Context,
+  person(
+    @Ctx() { dataSources }: Context,
     @Arg('id', type => Int) id: number,
-  ): Promise<Person> {
-    const response = await ctx.fetcher.get<Person>(`/actors/${id}`);
-    return response.data;
+  ): Promise<Person | null> {
+    return dataSources.people.getPerson(id);
   }
 }

@@ -20,18 +20,16 @@ export class MovieResolver {
   @Authorized()
   @Query(returns => Movie, { nullable: true })
   async movie(
-    @Ctx() ctx: Context,
+    @Ctx() { dataSources }: Context,
     @Arg('id', type => Int) id: number,
-  ): Promise<Movie> {
-    const response = await ctx.fetcher.get<Movie>(`/movies/${id}`);
-    return response.data;
+  ): Promise<Movie | null> {
+    return dataSources.movies.getMovie(id);
   }
 
   @Authorized()
   @Query(returns => [Movie])
-  async movies(@Ctx() ctx: Context): Promise<Movie[]> {
-    const response = await ctx.fetcher.get<Movie[]>(`/movies`);
-    return response.data;
+  async movies(@Ctx() { dataSources }: Context): Promise<Movie[]> {
+    return dataSources.movies.getMovies();
   }
 
   @Authorized('ADMIN')
@@ -48,20 +46,17 @@ export class MovieResolver {
 
   @FieldResolver(type => [Person], { nullable: 'items' })
   async directors(
-    @Ctx() ctx: Context,
-    @Root() movie: Movie,
+    @Ctx() { dataSources }: Context,
+    @Root() { id }: Movie,
   ): Promise<Person[]> {
-    const response = await ctx.fetcher.get<any[]>(
-      `/movies/${movie.id}/directors?_expand=persons`,
-    );
-    return response.data.map(item => item.persons);
+    return dataSources.movies.getMovieDirectors(id);
   }
 
   @FieldResolver(type => [Person], { nullable: 'items' })
-  async actors(@Ctx() ctx: Context, @Root() movie: Movie): Promise<Person[]> {
-    const response = await ctx.fetcher.get<any[]>(
-      `/movies/${movie.id}/actors?_expand=persons`,
-    );
-    return response.data.map(item => item.persons);
+  actors(
+    @Ctx() { dataSources }: Context,
+    @Root() { id }: Movie,
+  ): Promise<Person[]> {
+    return dataSources.movies.getMovieActors(id);
   }
 }

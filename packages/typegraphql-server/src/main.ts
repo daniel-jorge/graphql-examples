@@ -6,7 +6,6 @@ import 'reflect-metadata';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import * as TypeGraphQL from 'type-graphql';
 import { ApolloServer } from 'apollo-server-express';
-import axios from 'axios';
 // import debug from 'debug';
 import express from 'express';
 
@@ -15,6 +14,8 @@ import { useJwtStrategy, jwtAuthenticateMiddleware } from '@crz/jwt-auth';
 import { authChecker } from './auth-checker';
 import { Context } from './context.interface';
 import { jwtConf } from './jwt.conf';
+import { MovieDatasource } from './movie/movie.datasource';
+import { PersonDatasource } from './person/person.datasource';
 // import { ValidationContext } from 'graphql';
 
 // GraphQL
@@ -44,6 +45,10 @@ async function bootstrap(): Promise<void> {
 
     const server = new ApolloServer({
       schema,
+      dataSources: () => ({
+        movies: new MovieDatasource(process.env.REST_SERVER),
+        people: new PersonDatasource(process.env.REST_SERVER),
+      }),
       context: ({ req, res }): Context => {
         return {
           jwt: {
@@ -51,9 +56,6 @@ async function bootstrap(): Promise<void> {
             options: jwtConf.options,
           },
           user: (req as any).user,
-          fetcher: axios.create({
-            baseURL: process.env.REST_SERVER,
-          }),
         };
       },
       playground: true,

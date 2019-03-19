@@ -20,7 +20,8 @@
   "actors": [
     { "id": 1, "movieId": 1, "personsId": 10 },
     { "id": 2, "movieId": 1, "personsId": 11 },
-    { "id": 3, "movieId": 1, "personsId": 12 }
+    { "id": 3, "movieId": 1, "personsId": 12 },
+    { "id": 1, "movieId": 2, "personsId": 10 }
   ],
   "persons": [
     { "id": 1, "name": "Dwayne Carey-Hill" },

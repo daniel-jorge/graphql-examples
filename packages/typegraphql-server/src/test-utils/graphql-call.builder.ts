@@ -1,8 +1,11 @@
 import { graphql } from 'graphql';
 import { buildSchema } from 'type-graphql';
+import { createTestClient } from 'apollo-server-testing';
 
 import { User } from '../user/user.entity';
 import { authChecker } from '../auth-checker';
+import { RESTDataSource } from 'apollo-datasource-rest';
+import { ApolloServer } from 'apollo-server-express';
 
 interface VariableValues {
   [key: string]: any;
@@ -10,7 +13,10 @@ interface VariableValues {
 
 export class GraphQLCallBuilder {
   private resolvers: (string | Function)[];
-  private context: any;
+  private context: {};
+  private dataSources: {
+    [key: string]: RESTDataSource;
+  };
   private rootValue: any;
   private user: Partial<User>;
 
@@ -29,32 +35,38 @@ export class GraphQLCallBuilder {
     return this;
   }
 
+  public withDataSource(
+    name: string,
+    dataSource: RESTDataSource,
+  ): GraphQLCallBuilder {
+    this.dataSources = { ...this.dataSources, [name]: dataSource };
+    return this;
+  }
+
   public withRootValue(rootValue: any): GraphQLCallBuilder {
     this.rootValue = rootValue;
     return this;
   }
 
-  public async exec(
-    query: string,
-    variableValues?: VariableValues,
-  ): Promise<any> {
+  public async build(): Promise<any> {
     // build schema
     const schema = await buildSchema({
       resolvers: this.resolvers,
       authChecker,
     });
+
     // build context
     const context = {
       ...this.context,
       user: this.user,
     };
-    // call
-    return await graphql(
+
+    const server = new ApolloServer({
       schema,
-      query,
-      this.rootValue,
+      dataSources: () => this.dataSources,
       context,
-      variableValues,
-    );
+    });
+
+    return createTestClient(server);
   }
 }
