@@ -13,8 +13,7 @@
   },
   "devDependencies": {
     "@types/passport": "^1.0.0",
-    "@types/passport-jwt": "^3.0.1",
-    "typescript": "^3.3.3"
+    "@types/passport-jwt": "^3.0.1"
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
