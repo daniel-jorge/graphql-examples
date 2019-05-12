@@ -14,16 +14,20 @@ import { useJwtStrategy, jwtAuthenticateMiddleware } from '@crz/jwt-auth';
 import { authChecker } from './auth-checker';
 import { Context } from './context.interface';
 import { jwtConf } from './jwt.conf';
-import { MovieDatasource } from './movie/movie.datasource';
-import { PersonDatasource } from './person/person.datasource';
+import { UserDataSource } from './user/user.datasource';
+import { CommentDataSource } from './comment/comment.datasource';
+import { PostDataSource } from './post/post.datasource';
 // import { ValidationContext } from 'graphql';
 
 // GraphQL
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || '/graphql';
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 // Voyager
-const ENABLE_VOYAGER = process.env.ENABLE_VOYAGER === 'true';
+const ENABLE_VOYAGER = true; //process.env.ENABLE_VOYAGER === 'true';
 const VOYAGER_ENDPOINT = process.env.VOYAGER_ENDPOINT || '/voyager';
+
+//
+const REST_SERVER = 'http://localhost:3001/';
 
 async function bootstrap(): Promise<void> {
   // const debugQueryComplexity = debug('app:gql:query-complexity');
@@ -36,25 +40,26 @@ async function bootstrap(): Promise<void> {
 
     // build TypeGraphQL executable schema
     const schema = await TypeGraphQL.buildSchema({
-      resolvers: [
-        `${__dirname}/**/**.resolver.ts`,
-        `${__dirname}/**/**.resolver.js`,
-      ],
+      resolvers: [`${__dirname}/**/**.resolver.ts`, `${__dirname}/**/**.resolver.js`],
       authChecker,
     });
 
     const server = new ApolloServer({
       schema,
-      dataSources: () => ({
-        movies: new MovieDatasource(process.env.REST_SERVER),
-        people: new PersonDatasource(process.env.REST_SERVER),
-      }),
+      dataSources: () => {
+        return {
+          users: new UserDataSource(REST_SERVER),
+          comments: new CommentDataSource(REST_SERVER),
+          posts: new PostDataSource(REST_SERVER),
+        };
+      },
       context: ({ req, res }): Context => {
         return {
           jwt: {
             secret: jwtConf.secret,
             options: jwtConf.options,
           },
+          //token: <API_TOKEN>
           user: (req as any).user,
         };
       },
@@ -100,10 +105,7 @@ async function bootstrap(): Promise<void> {
     // Express middlewares
     app.use(jwtAuthenticateMiddleware());
     if (ENABLE_VOYAGER) {
-      app.use(
-        VOYAGER_ENDPOINT,
-        voyagerMiddleware({ endpointUrl: GRAPHQL_ENDPOINT }),
-      );
+      app.use(VOYAGER_ENDPOINT, voyagerMiddleware({ endpointUrl: GRAPHQL_ENDPOINT }));
     }
 
     // Apollo server as middlware

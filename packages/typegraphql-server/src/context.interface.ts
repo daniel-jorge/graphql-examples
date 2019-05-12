@@ -1,8 +1,9 @@
 import { SignOptions } from 'jsonwebtoken';
 
-import { User } from './user/user.entity';
-import { MovieDatasource } from './movie/movie.datasource';
-import { PersonDatasource } from './person/person.datasource';
+import { ConnectedUser } from './user/user.entity';
+import { UserDataSource } from './user/user.datasource';
+import { CommentDataSource } from './comment/comment.datasource';
+import { PostDataSource } from './post/post.datasource';
 
 export interface User {
   id: number;
@@ -11,13 +12,15 @@ export interface User {
 }
 
 export interface Context {
-  user: Partial<User>;
+  user: Partial<ConnectedUser>;
   jwt: {
     secret: string;
     options: SignOptions;
   };
   dataSources?: {
-    movies: MovieDatasource;
-    people: PersonDatasource;
+    comments: CommentDataSource;
+    posts: PostDataSource;
+    users: UserDataSource;
   };
+  token?: string;
 }

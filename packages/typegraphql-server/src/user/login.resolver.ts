@@ -13,7 +13,7 @@ export class LoginResolver {
   ): string {
     // Mocked authentication
     return generateToken(
-      { email: 'user@domain.org', name: 'user', roles: [] },
+      { id: 1, username: 'user name', email: 'user@domain.org', name: 'user', roles: [] },
       ctx.jwt.secret,
       ctx.jwt.options,
     );

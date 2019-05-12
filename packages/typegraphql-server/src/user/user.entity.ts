@@ -1,4 +1,5 @@
-import { ObjectType, Field, registerEnumType } from 'type-graphql';
+import { Field, registerEnumType, Int, ObjectType } from 'type-graphql';
+import { Post } from '../post/post.entity';
 
 enum Role {
   REGULAR = 'REGULAR',
@@ -12,12 +13,30 @@ registerEnumType(Role, {
 
 @ObjectType()
 export class User {
-  @Field({ nullable: true })
-  name?: string;
+  @Field(type => Int)
+  id: number;
+
+  @Field()
+  name: string;
+
+  @Field()
+  username: string;
 
   @Field()
   email: string;
 
+  @Field({ nullable: true })
+  phone?: string;
+
+  @Field({ nullable: true })
+  website?: string;
+
+  @Field(type => [Post], { nullable: 'items' })
+  posts: Post[];
+}
+
+@ObjectType()
+export class ConnectedUser extends User {
   @Field(type => [Role], { nullable: 'items' })
   roles: Role[];
 }
