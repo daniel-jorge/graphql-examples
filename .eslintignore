@@ -1,0 +1,9 @@
+.docz/
+.vscode/
+node_modules/
+.rpt2_cache/
+coverage/
+dist/
+
+jest.config.js
+babel.config.js

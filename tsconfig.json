@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["es2016", "esnext.asynciterable"],
+    "allowUnusedLabels": true,
+    "allowJs": false,
+    "lib": [
+      "es2016",
+      "esnext.asynciterable"
+    ],
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": false,
