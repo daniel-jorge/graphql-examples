@@ -9,3 +9,9 @@ yarn install
 yarn lerna run build
 yarn start:type-graphql
 ```
+
+GraphQL **end point** is `http://localhost:3000/graphql`
+
+GraphQL **Playground** is available at `http://localhost:3000/graphql`
+
+GraphQL **Voyager** is available at `http://localhost:3000/voyager`
