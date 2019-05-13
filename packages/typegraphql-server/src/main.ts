@@ -22,6 +22,8 @@ import { PostDataSource } from './post/post.datasource';
 // GraphQL
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || '/graphql';
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+// PLayground
+const ENABLE_PLAYGROUND = process.env.PLAYGROUND === 'true';
 // Voyager
 const ENABLE_VOYAGER = true; //process.env.ENABLE_VOYAGER === 'true';
 const VOYAGER_ENDPOINT = process.env.VOYAGER_ENDPOINT || '/voyager';
@@ -63,7 +65,7 @@ async function bootstrap(): Promise<void> {
           user: (req as any).user,
         };
       },
-      playground: true,
+      playground: ENABLE_PLAYGROUND,
       debug: process.env.NODE_ENV !== 'production',
       // validationRules: [
       //   /**
@@ -123,10 +125,11 @@ async function bootstrap(): Promise<void> {
       {
         port: PORT,
       },
-      () =>
+      () => {
         console.info(
-          `🚀 Server is running, GraphQL Playground available at http://localhost:${PORT}${GRAPHQL_ENDPOINT}`,
-        ),
+          `🚀 Server is running, GraphQL end point at http://localhost:${PORT}${GRAPHQL_ENDPOINT}`,
+        );
+      },
     );
   } catch (err) {
     console.error(err);
